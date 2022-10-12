@@ -1,0 +1,22 @@
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    RewriteCond %{HTTP:Authorization} ^(.*)
+    RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+    
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+ 
+    RewriteRule ^auth$ realdata/generate_token.php
+    RewriteRule ^get_prs$ realdata/getData.php
+    RewriteRule ^up_prs$ realdata/updateData.php
+    RewriteRule ^details$ realdata/detailprs.php
+    RewriteRule ^del_prs$ realdata/delprs.php
+
+    RewriteRule ^get_activite$ realdata/poste_activite/poste_activite.php
+
+    RewriteRule ^logger$ /API_RES_POSEIDON/api/users/Logger.php
+
+
+</IfModule>
