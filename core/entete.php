@@ -3,9 +3,9 @@
 header('Access-Control-Allow-Origin:*');   // On peut changer * par le lien du site web autorisé
 header("Access-Control-Allow-Headers: Authorization,Origin, X-Requested-With, Content-Type,Accept");
 header('Content-Type:application/json');
-include 'core/db.php';
+//include 'db.php';
 require_once 'config.php';
-require_once 'classes/JWT.php';
+require_once 'JWT.php';
 
 
 

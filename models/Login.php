@@ -6,11 +6,11 @@ error_reporting(E_ALL);
 ini_set('display_error',1);
 
 /**
- * @OA\Info(title="PDO PHP Rest Api", version="1.0")
+ * @OA\Info(title="APPNGSYS Rest Api", version="1.0")
  */
 
 class Login{
-
+    
     private $jwt;
     public $user_info;
     public $token;
@@ -20,9 +20,9 @@ class Login{
 
      /**
      * @OA\Get(
-     * path="/API_RES_POSEIDON/api/users/Logger.php",
-     * summary="User credentials",
-     * tags={"Logger"},
+     * path="/API_RES_POSEIDON/api/authentication/Logger.php",
+     * summary="Token de connexion",
+     * tags={"Authentification"},
      * @OA\Response(response="200", description="Success"),
      * @OA\Response(response="404", description="Not found"),
      * )
