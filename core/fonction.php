@@ -1,5 +1,5 @@
 <?php 
- 
+include_once "db.php";
 ini_set('display_errors', 1);
 /**
  * Comptage des données 

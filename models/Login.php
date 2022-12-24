@@ -6,7 +6,15 @@ error_reporting(E_ALL);
 ini_set('display_error',1);
 
 /**
- * @OA\Info(title="APPNGSYS Rest Api", version="1.0")
+ * @OA\Info(title="APPNGSYS Rest Api", version="1.0"),
+ * @OA\SecurityScheme(
+ *      securityScheme="bearerAuth",
+ *      in="header",
+ *      name="bearerAuth",
+ *      type="http",
+ *      scheme="bearer",
+ *      bearerFormat="JWT",
+ * ),
  */
 
 class Login{
@@ -17,7 +25,7 @@ class Login{
     public $header;
     public $payload;
     public $response;
-
+   
      /**
      * @OA\Get(
      * path="/API_RES_POSEIDON/api/authentication/Logger.php",
