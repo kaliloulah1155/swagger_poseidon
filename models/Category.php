@@ -8,6 +8,7 @@ class Category {
     
 
     //Categories Properties
+    public $id;
     public $slu;
     public $len;
     public $lfr;
@@ -31,43 +32,42 @@ class Category {
     public function read()
     {
         // Query to get categories data.
-        $categories = liste_donnee(["ID","LFR","LEN"],"","CAT");
+        $categories = liste_donnee([],"","CAT");
         return $categories;
     }
 
-    /*
-    // Get single post.
-    public function read_single_post($id)
+    
+    // Get single categories.
+    /**
+     * @OA\Post(path="/API_RES_POSEIDON/api/categories/single.php",
+     * tags={"Categories"},
+     * security={{"bearerAuth":{}}}, 
+     * summary="Afficher une catégorie par id",
+     * @OA\Parameter(
+     *    name="id",
+     *    in="query",
+     *    required=true,
+     *    description="The id passed to get in query string goes here",
+     *    @OA\Schema(
+     *       type="string"
+     *    ),
+     * ),
+     * @OA\Response(response="200", description="Success"),
+     * @OA\Response(response="404", description="Not found"),
+     * )
+     */
+    public function read_single_category($id)
     {
         $this->id = $id;
         // Query to get posts data.
-        
-        $query = 'SELECT 
-            c.name as category,
-            p.id,
-            p.category_id,
-            p.title,
-            p.description,
-            p.created_at
-            FROM
-            '.$this->table.' p LEFT JOIN
-            category c 
-            ON p.category_id = c.id
-            WHERE p.id= ?
-            LIMIT 0,1';
-            
-        $post = $this->connection->prepare($query);
-        
-        //$post->bindParam(9, $this->id);
-        
-        $post->execute([$this->id]);
 
-
-        return $post;
+        $categorie = liste_donnee([],"\"ID\"='".$this->id."'","CAT");
+        //$categorie = liste_donnee([],"\"ID\"='".$this->id."' AND  \"DEL\" IS NULL AND \"STT\"=1","CAT");
+        return $categorie;
        
     }
 
-
+/*
     // Insert a new record.
     
     public function create_new_record($params)

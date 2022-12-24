@@ -56,7 +56,7 @@ class Login{
          $this->jwt=new JWT();
 
         //$token=$jwt->generate($header,$payload,SECRET,60);
-        $this->token=$this->jwt->generate($this->header,$this->payload,SECRET,6000);
+        $this->token=$this->jwt->generate($this->header,$this->payload,SECRET,(60*60*24)); // 1 jour
 
         $this->response=[
             'user_info'=>$this->payload,
