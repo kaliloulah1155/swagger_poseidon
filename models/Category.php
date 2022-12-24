@@ -60,42 +60,77 @@ class Category {
     {
         $this->id = $id;
         // Query to get posts data.
-
         $categorie = liste_donnee([],"\"ID\"='".$this->id."'","CAT");
         //$categorie = liste_donnee([],"\"ID\"='".$this->id."' AND  \"DEL\" IS NULL AND \"STT\"=1","CAT");
         return $categorie;
-       
     }
 
-/*
+
     // Insert a new record.
+    /**
+     * @OA\Post(path="/API_RES_POSEIDON/api/categories/insert.php",
+     * summary="Insérer une nouvelle catégorie.", tags={"Categories"},
+     * security={{"bearerAuth":{}}},
+     * @OA\RequestBody(
+     *    @OA\MediaType(
+     *        mediaType="multipart/form-data",
+     *        @OA\Schema(
+     *            @OA\Property(
+     *                description="Slug",
+     *                property="slu",
+     *                type="string",
+     *            ),
+     *            @OA\Property(
+     *                description="Libellé en francais",
+     *                property="lfr",
+     *                type="string",
+     *            ),
+     *            @OA\Property(
+     *                description="Libellé en anglais",
+     *                property="len",
+     *                type="string",
+     *            ),
+     *            @OA\Property(
+     *                description="Statut : 0:activé | 1:desactivé",
+     *                property="stt",
+     *                type="integer",
+     *            ),
+     *            @OA\Property(
+     *                description="Position",
+     *                property="pst",
+     *                type="integer",
+     *            ),
+     *            @OA\Property(
+     *                description="Identifiant catégorie parent",
+     *                property="ica",
+     *                type="string",
+     *            ),
+     *            @OA\Property(
+     *                description="Code",
+     *                property="cod",
+     *                type="string",
+     *            ),
+     *        ),
+     *    ),
+     * ),
+     * @OA\Response(response="200", description="Success"),
+     * @OA\Response(response="404", description="Not found"),
+     * )
+     */
     
     public function create_new_record($params)
     {
         try
         {
-            $this->title       = $params['title'];
-            $this->description = $params['description'];
-            $this->category_id = $params['category_id'];
-    
-            $query = 'INSERT INTO '. $this->table .' 
-                SET
-                  title = :title,
-                  category_id = :category_id,
-                  description = :details';
+            $listeCAT = liste_donnee(["COD"], "\"COD\"='".$params['COD']."'", "CAT")[0];
+            $listeCA = liste_donnee(["LFR"], "\"LFR\"='" .$params['LFR']. "'", "CAT")[0];
+			if($listeCAT["COD"] ==NULL || $listeCA["LFR"]==NULL){
+                    ajouter_donnee($params, 'CAT');
+                    return true;
+             }else{
+                return false;
+             }  
            
-            $statement = $this->connection->prepare($query);
-                    
-            $statement->bindValue('title', $this->title);
-            $statement->bindValue('category_id', $this->category_id);
-            $statement->bindValue('details', $this->description);
-            
-            if($statement->execute())
-            {
-                return true;
-            }
-    
-            return false;
         }
         catch(PDOException $e)
         {
@@ -103,7 +138,7 @@ class Category {
         }
     }
 
-
+/*
     // Update a new record.
     
     public function update_new_record($params)
