@@ -75,6 +75,7 @@ class Category {
      *    @OA\MediaType(
      *        mediaType="multipart/form-data",
      *        @OA\Schema(
+     *            required={"lfr","len"},
      *            @OA\Property(
      *                description="Slug",
      *                property="slu",
@@ -124,7 +125,7 @@ class Category {
         {
             $listeCAT = liste_donnee(["COD"], "\"COD\"='".$params['COD']."'", "CAT")[0];
             $listeCA = liste_donnee(["LFR"], "\"LFR\"='" .$params['LFR']. "'", "CAT")[0];
-			if($listeCAT["COD"] ==NULL || $listeCA["LFR"]==NULL){
+			if($listeCAT["COD"]==NULL || $listeCA["LFR"]==NULL){
                     ajouter_donnee($params, 'CAT');
                     return true;
              }else{
@@ -138,45 +139,128 @@ class Category {
         }
     }
 
-/*
+ 
     // Update a new record.
-    
+    /**
+     * @OA\Post(path="/API_RES_POSEIDON/api/categories/update.php",
+     * summary="Mise à jour d'une catégorie.", tags={"Categories"},
+     * security={{"bearerAuth":{}}},
+     * @OA\RequestBody(
+     *    @OA\MediaType(
+     *        mediaType="multipart/form-data",
+     *        @OA\Schema(
+     *            required={"id"},
+     *            @OA\Property(
+     *                property="id",
+     *                type="integer",
+     *            ),
+     *            @OA\Property(
+     *                description="Slug",
+     *                property="slu",
+     *                type="string",
+     *            ),
+     *            @OA\Property(
+     *                description="Libellé en francais",
+     *                property="lfr",
+     *                type="string",
+     *            ),
+     *            @OA\Property(
+     *                description="Libellé en anglais",
+     *                property="len",
+     *                type="string",
+     *            ),
+     *            @OA\Property(
+     *                description="Statut : 0:activé | 1:desactivé",
+     *                property="stt",
+     *                type="integer",
+     *            ),
+     *            @OA\Property(
+     *                description="Position",
+     *                property="pst",
+     *                type="integer",
+     *            ),
+     *            @OA\Property(
+     *                description="Identifiant catégorie parent",
+     *                property="ica",
+     *                type="string",
+     *            ),
+     *            @OA\Property(
+     *                description="Code",
+     *                property="cod",
+     *                type="string",
+     *            ),
+     *        ),
+     *    ),
+     * ),
+     * @OA\Response(response="200", description="Success"),
+     * @OA\Response(response="404", description="Not found"),
+     * )
+     */
     public function update_new_record($params)
     {
         try
         {
-            $this->id          = $params['id'];
-            $this->title       = $params['title'];
-            $this->description = $params['description'];
-            $this->category_id = $params['category_id'];
-    
-            $query = 'UPDATE '. $this->table .' 
-                SET
-                  title = :title,
-                  category_id = :category_id,
-                  description = :details
-                WHERE id = :id';
+            $record = liste_donnee(["ID"], "\"ID\"='".$params['ID']."'", "CAT")[0];
+        
+			if(!empty($record)){
+                modifier_donnee(
+                    $params,
+                    ['ID' => $params["ID"]],
+                    'CAT'
+                );
+                    return true;
+             }else{
+                return false;
+             }  
            
-            $statement = $this->connection->prepare($query);
-            
-            $statement->bindValue('id', $this->id);
-            $statement->bindValue('title', $this->title);
-            $statement->bindValue('category_id', $this->category_id);
-            $statement->bindValue('details', $this->description);
-            
-            if($statement->execute())
-            {
-                return true;
-            }
-    
-            return false;
         }
         catch(PDOException $e)
         {
             echo $e->getMessage();
         }
     }
+     
+    // Delete a record.
+    /**
+     * @OA\Post(path="/API_RES_POSEIDON/api/categories/destroy.php",
+     * summary="Supprimer une catégorie.", tags={"Categories"},
+     * security={{"bearerAuth":{}}},
+     * @OA\RequestBody(
+     *    @OA\MediaType(
+     *        mediaType="multipart/form-data",
+     *        @OA\Schema(
+     *            required={"id"},
+     *            @OA\Property(
+     *                property="id",
+     *                type="integer",
+     *            ),
+     *        ),
+     *    ),
+     * ),
+     * @OA\Response(response="200", description="Success"),
+     * @OA\Response(response="404", description="Not found"),
+     * )
      */
+    public function delete_record($params)
+    {
+        try
+        {
+            $record = liste_donnee(["ID"], "\"ID\"='".$params['ID']."'", "CAT")[0];
+			if(!empty($record)){
+				supprimer_donnee("\"ID\"=" . $params["ID"],"CAT");
+                    return true;
+             }else{
+                return false;
+             }  
+           
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+
 
 
 

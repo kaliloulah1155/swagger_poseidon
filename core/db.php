@@ -4,11 +4,11 @@
     // Database
 
    
-    define('DB_HOST', 'localhost');
-    define('DB_PORT', '5432');
+  //define('DB_HOST', 'localhost');
+  //define('DB_PORT', '5432');
 
-    //define('DB_HOST', '91.191.144.33');
-    //define('DB_PORT', '5432');
+    define('DB_HOST', '91.191.144.33');
+    define('DB_PORT', '5432');
 
     define('DB_NAME', 'APPNGSYS');
     define('DB_USERNAME', 'appngsys');

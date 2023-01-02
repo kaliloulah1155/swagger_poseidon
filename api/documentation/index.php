@@ -20,7 +20,8 @@
       // Begin Swagger UI call region
         console.log(window.location.pathname);
       const ui = SwaggerUIBundle({
-        url: "http://localhost:81/API_RES_POSEIDON/api/documentation/api.php",
+       // url: "http://localhost:81/API_RES_POSEIDON/api/documentation/api.php", //on localhost machine
+       url: "http://192.168.1.159:81/API_RES_POSEIDON/api/documentation/api.php",  //on mobile phone
         dom_id: '#swagger-ui',
         deepLinking: true,
           presets: [

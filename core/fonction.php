@@ -212,3 +212,49 @@ if (!function_exists('supprimer_donnee')) {
     }
 }
 
+
+/**
+ * modification des données 
+ * $champValeurs array associatif, $condition string, $table string Code Type Doc
+ * return boolean
+ */
+if (!function_exists('modifier_donnee')) {
+    function modifier_donnee($champValeurs = [], $condition = [], $table)
+    {
+        global $db;
+        $champValeurs["UPD"] = date('Y-m-d h:i:s');
+        try {
+            if (count($champValeurs) != 0 || count($condition) != 0) {
+                $champs = "";
+                foreach ($champValeurs as $key => $value) {
+                    $champs .= '"' . $key . '"' . "='" . $value . "',";
+                }
+                $champs = trim($champs, ',');
+
+                $champsC = "";
+                foreach ($condition as $key => $value) {
+                    $champsC .= '"' . $key . '"' . "='" . $value . "' AND ";
+                }
+                $t = $table;
+                $table = 'public.pos_tab_index_' . strtolower($table);
+                $champsC = trim($champsC, 'AND ');
+
+                $q = "UPDATE $table SET $champs WHERE $champsC";
+                // dd($q);
+                pg_query($db, $q);
+            }
+
+            $data = array(
+                'status' => 1,
+                'message' => 'Element modifié avec succès'
+            );
+        } catch (\Throwable $th) {
+            $data = array(
+                'status' => 0,
+                'message' => 'Echec modification d\'élément.' . $th->getMessage()
+            );
+        }
+
+        return $data;
+    }
+}
